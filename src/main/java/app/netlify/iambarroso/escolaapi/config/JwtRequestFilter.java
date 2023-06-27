@@ -1,5 +1,6 @@
 package app.netlify.iambarroso.escolaapi.config;
 
+import app.netlify.iambarroso.escolaapi.exceptions.UnauthorizedException;
 import app.netlify.iambarroso.escolaapi.service.CustomUserDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -52,9 +53,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                         .getBody()
                         .getSubject();
             } catch (ExpiredJwtException e) {
-                // Handle expired JWT exception
+                throw new UnauthorizedException("Sessão inválida");
             } catch (MalformedJwtException e) {
-                // Handle invalid JWT exception
+                throw new UnauthorizedException("Token inválido");
             }
         }
 
