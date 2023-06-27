@@ -1,5 +1,6 @@
 package app.netlify.iambarroso.escolaapi.rest.controller;
 
+import app.netlify.iambarroso.escolaapi.rest.dto.LoginResponseDto;
 import app.netlify.iambarroso.escolaapi.rest.dto.UsuarioLoginDto;
 import app.netlify.iambarroso.escolaapi.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ public class AuthController {
     private final AuthService service;
 
     @PostMapping(path = "/login")
-    public String login(@RequestBody UsuarioLoginDto usuarioLogin) {
+    public LoginResponseDto login(@RequestBody UsuarioLoginDto usuarioLogin) {
        return service.login(usuarioLogin.getLogin(), usuarioLogin.getSenha());
     }
 }
