@@ -1,10 +1,12 @@
 package app.netlify.iambarroso.escolaapi.rest.controller.advice;
 
 import app.netlify.iambarroso.escolaapi.exceptions.NotFoundException;
+import app.netlify.iambarroso.escolaapi.exceptions.UnauthorizedException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -23,9 +25,9 @@ public class ApiControllerAdvice {
         return new ApiErrorResponse(ex.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiErrorResponse getError(Exception ex) {
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ApiErrorResponse getError(AccessDeniedException ex) {
         return new ApiErrorResponse(ex.getMessage());
     }
 
@@ -51,5 +53,11 @@ public class ApiControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiErrorResponse getError(ConversionFailedException ex) {
         return new ApiErrorResponse("Erro na consulta, verifique os parâmetros informados e tente novamente");
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ApiErrorResponse getError(UnauthorizedException ex) {
+        return new ApiErrorResponse(ex.getMessage());
     }
 }
